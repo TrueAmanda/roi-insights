@@ -3,6 +3,7 @@ import { Campaign, calculateMetrics } from "@/types/campaign";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AIInsightsProps {
   campaigns: Campaign[];
@@ -14,12 +15,6 @@ export function AIInsights({ campaigns }: AIInsightsProps) {
   const [error, setError] = useState<string | null>(null);
 
   const generate = async () => {
-    const apiKey = import.meta.env.VITE_OPENROUTER_KEY;
-    if (!apiKey) {
-      setError("Chave da API não configurada. Defina VITE_OPENROUTER_KEY.");
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
@@ -29,27 +24,12 @@ export function AIInsights({ campaigns }: AIInsightsProps) {
     }).join("\n");
 
     try {
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "openai/gpt-4o",
-          messages: [
-            {
-              role: "system",
-              content: "Você é um analista de marketing digital experiente. Analise os dados das campanhas e gere um parágrafo curto (máximo 4 frases) com insights práticos e sugestões de otimização. Seja direto e use dados para embasar. Responda em português brasileiro.",
-            },
-            { role: "user", content: `Analise estas campanhas:\n${summary}` },
-          ],
-        }),
+      const { data, error: fnError } = await supabase.functions.invoke("generate-insights", {
+        body: { summary },
       });
 
-      if (!res.ok) throw new Error(`Erro na API: ${res.status}`);
-      const data = await res.json();
-      setInsight(data.choices?.[0]?.message?.content || "Sem resposta.");
+      if (fnError) throw new Error(fnError.message);
+      setInsight(data?.insight || "Sem resposta.");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erro ao gerar insights.");
     } finally {
