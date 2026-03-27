@@ -4,7 +4,7 @@
 
 AdMetrics é uma ferramenta web para gestores de tráfego e analistas de marketing calcularem, visualizarem e compararem o desempenho de campanhas de mídia paga — com apoio de inteligência artificial.
 
-**[Acessar o app](https://ad-metrics-ai.lovable.app)** · **[Sobre o produto](https://ad-metrics-ai.lovable.app/readme/readme)**
+**[Acessar o app](https://ad-metrics-ai.lovable.app)** · **[Sobre o produto](https://ad-metrics-ai.lovable.app/readme)**
 
 ---
 
