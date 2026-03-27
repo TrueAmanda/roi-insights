@@ -12,44 +12,60 @@ serve(async (req) => {
 
   try {
     const { summary } = await req.json();
-    const apiKey = Deno.env.get("GOOGLE_GEMINI_API_KEY");
+    const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: "GOOGLE_GEMINI_API_KEY não configurada." }), {
+      return new Response(JSON.stringify({ error: "LOVABLE_API_KEY não configurada." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `Você é um analista de marketing digital experiente. Analise os dados das campanhas abaixo e gere um parágrafo curto (máximo 4 frases) com insights práticos e sugestões de otimização. Seja direto e use dados para embasar. Responda em português brasileiro.\n\nDados:\n${summary}`,
-                },
-              ],
-            },
-          ],
-        }),
-      }
-    );
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          {
+            role: "system",
+            content: "Você é um analista de marketing digital experiente. Analise os dados das campanhas e gere um parágrafo curto (máximo 4 frases) com insights práticos e sugestões de otimização. Seja direto e use dados para embasar. Responda em português brasileiro.",
+          },
+          {
+            role: "user",
+            content: summary,
+          },
+        ],
+      }),
+    });
+
+    if (response.status === 429) {
+      return new Response(JSON.stringify({ error: "Limite de requisições excedido. Tente novamente em alguns segundos." }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (response.status === 402) {
+      return new Response(JSON.stringify({ error: "Créditos insuficientes. Adicione créditos ao workspace." }), {
+        status: 402,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Gemini API error:", response.status, errorText);
-      return new Response(JSON.stringify({ error: `Erro na API Gemini: ${response.status}` }), {
-        status: response.status,
+      console.error("AI gateway error:", response.status, errorText);
+      return new Response(JSON.stringify({ error: `Erro no gateway de IA: ${response.status}` }), {
+        status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta.";
+    const text = data.choices?.[0]?.message?.content || "Sem resposta.";
 
     return new Response(JSON.stringify({ insight: text }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
