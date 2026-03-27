@@ -119,14 +119,15 @@ export function PDFExport({ campaigns }: PDFExportProps) {
     // ── Campaign cards ──
     let y = sum2Y + 34;
 
-    campaigns.forEach((c, i) => {
-      const cardH = 58;
+    campaigns.forEach((c) => {
+      const m = calculateMetrics(c);
+
+      // Dynamic card height
+      const cardH = 62;
       if (y + cardH > ph - 22) {
         doc.addPage();
         y = 22;
       }
-
-      const m = calculateMetrics(c);
 
       // Card background
       doc.setFillColor(255, 255, 255);
@@ -137,67 +138,62 @@ export function PDFExport({ campaigns }: PDFExportProps) {
       doc.setFillColor(...brandColor);
       doc.rect(ml, y, 3, cardH, "F");
 
-      // Campaign name
+      const innerL = ml + 10;
+      const innerW = contentW - 20;
+
+      // Campaign name + badge
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...darkText);
-      doc.text(`${c.name}`, ml + 10, y + 11);
+      doc.text(c.name, innerL, y + 11);
 
-      // Channel badge
       doc.setFontSize(7);
       doc.setFont("helvetica", "normal");
       const badgeText = c.channel;
+      const nameW = doc.getTextWidth(c.name);
+      // Reset font to 12 bold to measure name correctly
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      const actualNameW = doc.getTextWidth(c.name);
+      doc.setFontSize(7);
+      doc.setFont("helvetica", "normal");
       const badgeW = doc.getTextWidth(badgeText) + 8;
-      const badgeX = ml + 10 + doc.getTextWidth(c.name) + 8;
+      const badgeX = innerL + actualNameW + 6;
       doc.setFillColor(230, 235, 250);
       doc.roundedRect(badgeX, y + 4, badgeW, 10, 2, 2, "F");
       doc.setTextColor(60, 80, 160);
       doc.text(badgeText, badgeX + 4, y + 11);
 
-      // Row 1: Investment & Revenue
+      // Row 1: Data fields — use 5 equal columns
       const row1Y = y + 22;
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...medGray);
+      const dataItems = [
+        { label: "Investimento", value: fmt(c.investment) },
+        { label: "Receita", value: fmt(c.revenue) },
+        { label: "Cliques", value: String(c.clicks) },
+        { label: "Leads", value: String(c.leads) },
+        { label: "Vendas", value: String(c.sales) },
+      ];
 
-      doc.text("Investimento", ml + 10, row1Y);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...darkText);
-      doc.text(fmt(c.investment), ml + 10, row1Y + 6);
+      const dataColW = innerW / dataItems.length;
+      dataItems.forEach((item, di) => {
+        const dx = innerL + dataColW * di;
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(...medGray);
+        doc.text(item.label, dx, row1Y);
 
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...medGray);
-      doc.text("Receita", ml + 60, row1Y);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...darkText);
-      doc.text(fmt(c.revenue), ml + 60, row1Y + 6);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(...darkText);
+        doc.text(item.value, dx, row1Y + 6);
+      });
 
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...medGray);
-      doc.text("Cliques", ml + 110, row1Y);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...darkText);
-      doc.text(String(c.clicks), ml + 110, row1Y + 6);
-
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...medGray);
-      doc.text("Leads", ml + 140, row1Y);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...darkText);
-      doc.text(String(c.leads), ml + 140, row1Y + 6);
-
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...medGray);
-      doc.text("Vendas", ml + 160, row1Y);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...darkText);
-      doc.text(String(c.sales), ml + 160, row1Y + 6);
-
-      // Row 2: Metrics with colored values
-      const row2Y = y + 40;
+      // Divider
+      const row2Y = y + 42;
       doc.setDrawColor(235, 235, 240);
-      doc.line(ml + 10, row2Y - 5, ml + contentW - 10, row2Y - 5);
+      doc.line(innerL, row2Y - 4, innerL + innerW, row2Y - 4);
 
+      // Row 2: Metrics
       const metricsRow = [
         { label: "ROI", value: fmtPct(m.roi), good: m.roi >= 0 },
         { label: "ROAS", value: m.roas.toFixed(2) + "x", good: m.roas >= 1 },
@@ -206,9 +202,9 @@ export function PDFExport({ campaigns }: PDFExportProps) {
         { label: "Conversão", value: fmtPct(m.conversionRate), good: true },
       ];
 
-      const metricColW = (contentW - 20) / metricsRow.length;
+      const metricColW = innerW / metricsRow.length;
       metricsRow.forEach((met, mi) => {
-        const mx = ml + 10 + metricColW * mi;
+        const mx = innerL + metricColW * mi;
         doc.setFontSize(7);
         doc.setFont("helvetica", "normal");
         doc.setTextColor(...medGray);
@@ -221,7 +217,7 @@ export function PDFExport({ campaigns }: PDFExportProps) {
         } else {
           doc.setTextColor(...darkText);
         }
-        doc.text(met.value, mx, row2Y + 7);
+        doc.text(met.value, mx, row2Y + 8);
       });
 
       y += cardH + 8;
