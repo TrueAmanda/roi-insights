@@ -18,9 +18,9 @@ function formatPercent(v: number) {
 
 function MetricItem({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div className="text-center">
+    <div className="text-center min-w-0 shrink-0">
       <p className="metric-label">{label}</p>
-      <p className={`metric-value ${color || "text-foreground"}`}>{value}</p>
+      <p className={`metric-value whitespace-nowrap text-sm ${color || "text-foreground"}`}>{value}</p>
     </div>
   );
 }
