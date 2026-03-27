@@ -14,45 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      campaigns: {
-        Row: {
-          channel: string
-          clicks: number
-          created_at: string
-          id: string
-          investment: number
-          leads: number
-          name: string
-          revenue: number
-          sales: number
-          user_id: string
-        }
-        Insert: {
-          channel: string
-          clicks?: number
-          created_at?: string
-          id?: string
-          investment?: number
-          leads?: number
-          name: string
-          revenue?: number
-          sales?: number
-          user_id: string
-        }
-        Update: {
-          channel?: string
-          clicks?: number
-          created_at?: string
-          id?: string
-          investment?: number
-          leads?: number
-          name?: string
-          revenue?: number
-          sales?: number
-          user_id?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
