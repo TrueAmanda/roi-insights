@@ -217,7 +217,7 @@ export function PDFExport({ campaigns }: PDFExportProps) {
         doc.setFontSize(10);
         doc.setFont("helvetica", "bold");
         if (met.label === "ROI" || met.label === "ROAS") {
-          doc.setTextColor(met.good ? 22, 163, 74 : 220, 38, 38);
+          if (met.good) { doc.setTextColor(22, 163, 74); } else { doc.setTextColor(220, 38, 38); }
         } else {
           doc.setTextColor(...darkText);
         }
