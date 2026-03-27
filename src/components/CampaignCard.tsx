@@ -18,9 +18,9 @@ function formatPercent(v: number) {
 
 function MetricItem({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div className="text-center">
+    <div className="text-center min-w-0 shrink-0">
       <p className="metric-label">{label}</p>
-      <p className={`metric-value ${color || "text-foreground"}`}>{value}</p>
+      <p className={`metric-value whitespace-nowrap text-sm ${color || "text-foreground"}`}>{value}</p>
     </div>
   );
 }
@@ -62,7 +62,7 @@ export function CampaignCard({ campaign, onRemove }: CampaignCardProps) {
       </div>
 
       <div className="border-t pt-4">
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-3">
           <MetricItem label="ROI" value={formatPercent(m.roi)} color={m.roi >= 0 ? "text-success" : "text-destructive"} />
           <MetricItem label="ROAS" value={m.roas.toFixed(2) + "x"} color={m.roas >= 1 ? "text-success" : "text-destructive"} />
           <MetricItem label="CPL" value={formatCurrency(m.cpl)} />
