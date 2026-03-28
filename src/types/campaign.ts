@@ -7,6 +7,7 @@ export interface Campaign {
   leads: number;
   sales: number;
   revenue: number;
+  roiGoal?: number;
 }
 
 export interface CampaignMetrics {
