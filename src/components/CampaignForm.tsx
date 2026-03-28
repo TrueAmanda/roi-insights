@@ -17,6 +17,7 @@ const initialForm = {
   leads: "",
   sales: "",
   revenue: "",
+  roiGoal: "",
 };
 
 export function CampaignForm({ onAdd }: CampaignFormProps) {
@@ -38,6 +39,7 @@ export function CampaignForm({ onAdd }: CampaignFormProps) {
       leads: Number(form.leads) || 0,
       sales: Number(form.sales) || 0,
       revenue: Number(form.revenue) || 0,
+      ...(form.roiGoal ? { roiGoal: Number(form.roiGoal) } : {}),
     });
     setForm(initialForm);
   };
@@ -50,6 +52,7 @@ export function CampaignForm({ onAdd }: CampaignFormProps) {
     { key: "leads", label: "Leads", type: "number", placeholder: "0" },
     { key: "sales", label: "Vendas", type: "number", placeholder: "0" },
     { key: "revenue", label: "Receita gerada (R$)", type: "number", placeholder: "0,00" },
+    { key: "roiGoal", label: "Meta de ROI (%)", type: "number", placeholder: "Ex: 150 (opcional)" },
   ];
 
   return (

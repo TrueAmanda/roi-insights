@@ -1,5 +1,5 @@
 import { Campaign, CampaignMetrics, calculateMetrics } from "@/types/campaign";
-import { Trash2 } from "lucide-react";
+import { Trash2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -69,6 +69,15 @@ export function CampaignCard({ campaign, onRemove }: CampaignCardProps) {
           <MetricItem label="CPA" value={formatCurrency(m.cpa)} />
           <MetricItem label="Conversão" value={formatPercent(m.conversionRate)} />
         </div>
+        {campaign.roiGoal != null && (
+          <div className={`mt-3 flex items-center gap-1.5 text-sm font-medium ${m.roi >= campaign.roiGoal ? "text-success" : "text-destructive"}`}>
+            {m.roi >= campaign.roiGoal ? (
+              <><CheckCircle2 className="h-4 w-4" /> Meta atingida ({formatPercent(campaign.roiGoal)})</>
+            ) : (
+              <><XCircle className="h-4 w-4" /> Abaixo da meta ({formatPercent(campaign.roiGoal)})</>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   );
