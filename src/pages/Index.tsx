@@ -80,6 +80,8 @@ export default function Index() {
           </div>
         )}
 
+        <CampaignCharts campaigns={campaigns} />
+
         <AIInsights campaigns={campaigns} />
 
         {campaigns.length === 0 && (
