@@ -1,18 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Campaign } from "@/types/campaign";
 import { CampaignForm } from "@/components/CampaignForm";
 import { CampaignCard } from "@/components/CampaignCard";
 import { AIInsights } from "@/components/AIInsights";
 import { PDFExport } from "@/components/PDFExport";
 import { AnimatePresence } from "framer-motion";
-import { BarChart3 } from "lucide-react";
+import { BarChart3, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+
+const STORAGE_KEY = "admetrics-campaigns";
+
+function loadCampaigns(): Campaign[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
 
 export default function Index() {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>(loadCampaigns);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(campaigns));
+  }, [campaigns]);
 
   const addCampaign = (c: Campaign) => setCampaigns((prev) => [...prev, c]);
   const removeCampaign = (id: string) => setCampaigns((prev) => prev.filter((c) => c.id !== id));
+  const clearAll = () => setCampaigns([]);
 
   return (
     <div className="min-h-screen bg-background">
