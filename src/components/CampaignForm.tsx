@@ -17,31 +17,9 @@ const initialForm = {
   leads: "",
   sales: "",
   revenue: "",
+  roiGoal: "",
 };
-
-export function CampaignForm({ onAdd }: CampaignFormProps) {
-  const [form, setForm] = useState(initialForm);
-
-  const update = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.channel) return;
-    onAdd({
-      id: crypto.randomUUID(),
-      name: form.name,
-      channel: form.channel,
-      investment: Number(form.investment) || 0,
-      clicks: Number(form.clicks) || 0,
-      leads: Number(form.leads) || 0,
-      sales: Number(form.sales) || 0,
-      revenue: Number(form.revenue) || 0,
-    });
-    setForm(initialForm);
-  };
-
+...
   const fields = [
     { key: "name", label: "Nome da campanha", type: "text", placeholder: "Ex: Black Friday 2024" },
     { key: "channel", label: "Canal", type: "text", placeholder: "Ex: Google Ads, Meta, TikTok" },
@@ -50,6 +28,7 @@ export function CampaignForm({ onAdd }: CampaignFormProps) {
     { key: "leads", label: "Leads", type: "number", placeholder: "0" },
     { key: "sales", label: "Vendas", type: "number", placeholder: "0" },
     { key: "revenue", label: "Receita gerada (R$)", type: "number", placeholder: "0,00" },
+    { key: "roiGoal", label: "Meta de ROI (%)", type: "number", placeholder: "Ex: 150 (opcional)" },
   ];
 
   return (
