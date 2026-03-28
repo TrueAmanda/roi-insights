@@ -3,6 +3,7 @@ import { Campaign } from "@/types/campaign";
 import { CampaignForm } from "@/components/CampaignForm";
 import { CampaignCard } from "@/components/CampaignCard";
 import { AIInsights } from "@/components/AIInsights";
+import { CampaignCharts } from "@/components/CampaignCharts";
 import { PDFExport } from "@/components/PDFExport";
 import { AnimatePresence } from "framer-motion";
 import { BarChart3, Trash2 } from "lucide-react";
@@ -78,6 +79,8 @@ export default function Index() {
             </AnimatePresence>
           </div>
         )}
+
+        <CampaignCharts campaigns={campaigns} />
 
         <AIInsights campaigns={campaigns} />
 
