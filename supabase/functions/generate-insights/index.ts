@@ -31,7 +31,17 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "Você é um analista de marketing digital experiente. Analise os dados das campanhas e gere um parágrafo curto (máximo 4 frases) com insights práticos e sugestões de otimização. Seja direto e use dados para embasar. Responda em português brasileiro.",
+            content: `Você é um analista de marketing digital experiente. Analise os dados das campanhas e retorne EXATAMENTE um JSON válido no formato abaixo, sem markdown, sem blocos de código, apenas o JSON puro:
+
+{"score": <número de 0 a 10 avaliando a performance geral>, "insight": "<parágrafo curto com máximo 4 frases contendo insights práticos e sugestões de otimização>"}
+
+Critérios para o score:
+- 8-10: ROI acima de 100% e ROAS acima de 3x
+- 5-7: ROI positivo mas moderado, ou métricas mistas
+- 2-4: ROI baixo ou negativo, custos altos
+- 0-1: Performance muito ruim, prejuízo claro
+
+Seja direto, use dados para embasar. Responda em português brasileiro.`,
           },
           {
             role: "user",
@@ -65,9 +75,24 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || "Sem resposta.";
+    const text = data.choices?.[0]?.message?.content || "";
 
-    return new Response(JSON.stringify({ insight: text }), {
+    // Try to parse JSON from the response
+    let score: number | null = null;
+    let insight = text;
+
+    try {
+      // Clean potential markdown code blocks
+      const cleaned = text.replace(/```json?\s*/g, "").replace(/```\s*/g, "").trim();
+      const parsed = JSON.parse(cleaned);
+      if (typeof parsed.score === "number") score = Math.min(10, Math.max(0, parsed.score));
+      if (typeof parsed.insight === "string") insight = parsed.insight;
+    } catch {
+      // If JSON parsing fails, use raw text as insight
+      insight = text;
+    }
+
+    return new Response(JSON.stringify({ insight, score }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {

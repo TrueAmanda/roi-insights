@@ -9,8 +9,30 @@ interface AIInsightsProps {
   campaigns: Campaign[];
 }
 
+function ScoreBadge({ score }: { score: number }) {
+  const color =
+    score >= 7
+      ? "text-success border-success/30 bg-success/10"
+      : score >= 4
+        ? "text-warning border-warning/30 bg-warning/10"
+        : "text-destructive border-destructive/30 bg-destructive/10";
+
+  return (
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className={`flex flex-col items-center justify-center rounded-xl border-2 px-4 py-2 min-w-[72px] ${color}`}
+    >
+      <span className="text-3xl font-bold font-mono leading-none">{score.toFixed(1)}</span>
+      <span className="text-[10px] font-semibold uppercase tracking-wider mt-0.5 opacity-80">Score</span>
+    </motion.div>
+  );
+}
+
 export function AIInsights({ campaigns }: AIInsightsProps) {
   const [insight, setInsight] = useState<string | null>(null);
+  const [score, setScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,6 +52,7 @@ export function AIInsights({ campaigns }: AIInsightsProps) {
 
       if (fnError) throw new Error(fnError.message);
       setInsight(data?.insight || "Sem resposta.");
+      setScore(typeof data?.score === "number" ? data.score : null);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erro ao gerar insights.");
     } finally {
@@ -59,9 +82,18 @@ export function AIInsights({ campaigns }: AIInsightsProps) {
           </motion.p>
         )}
         {insight && (
-          <motion.p key="insight" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-sm leading-relaxed text-muted-foreground">
-            {insight}
-          </motion.p>
+          <motion.div
+            key="insight"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex items-start gap-4"
+          >
+            {score !== null && <ScoreBadge score={score} />}
+            <p className="text-sm leading-relaxed text-muted-foreground flex-1">
+              {insight}
+            </p>
+          </motion.div>
         )}
         {!insight && !error && (
           <motion.p key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-muted-foreground">
