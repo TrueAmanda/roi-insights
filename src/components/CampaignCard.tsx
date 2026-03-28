@@ -1,5 +1,5 @@
 import { Campaign, CampaignMetrics, calculateMetrics } from "@/types/campaign";
-import { Trash2 } from "lucide-react";
+import { Trash2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
