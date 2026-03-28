@@ -41,6 +41,12 @@ export default function Index() {
             <span className="text-lg font-bold text-foreground">AdMetrics</span>
           </Link>
           <div className="flex items-center gap-3">
+            {campaigns.length > 0 && (
+              <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive" onClick={clearAll}>
+                <Trash2 className="h-3.5 w-3.5" />
+                Limpar histórico
+              </Button>
+            )}
             <PDFExport campaigns={campaigns} />
             <Link
               to="/readme"
