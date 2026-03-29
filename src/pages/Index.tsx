@@ -6,7 +6,7 @@ import { AIInsights } from "@/components/AIInsights";
 import { CampaignCharts } from "@/components/CampaignCharts";
 import { PDFExport } from "@/components/PDFExport";
 import { AnimatePresence } from "framer-motion";
-import { BarChart3, Trash2 } from "lucide-react";
+import { BarChart3, Trash2, Presentation, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +23,7 @@ function loadCampaigns(): Campaign[] {
 
 export default function Index() {
   const [campaigns, setCampaigns] = useState<Campaign[]>(loadCampaigns);
+  const [presentationMode, setPresentationMode] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(campaigns));
@@ -31,6 +32,49 @@ export default function Index() {
   const addCampaign = (c: Campaign) => setCampaigns((prev) => [...prev, c]);
   const removeCampaign = (id: string) => setCampaigns((prev) => prev.filter((c) => c.id !== id));
   const clearAll = () => setCampaigns([]);
+
+  if (presentationMode) {
+    return (
+      <div className="min-h-screen bg-background p-6 md:p-10">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <BarChart3 className="h-8 w-8 text-primary" />
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground">AdMetrics</h1>
+            </div>
+            <p className="text-lg text-muted-foreground hidden sm:block">Relatório de Performance</p>
+          </div>
+
+          {campaigns.length > 0 ? (
+            <>
+              <div className="grid gap-5 md:grid-cols-2">
+                <AnimatePresence>
+                  {campaigns.map((c) => (
+                    <CampaignCard key={c.id} campaign={c} onRemove={removeCampaign} />
+                  ))}
+                </AnimatePresence>
+              </div>
+              <CampaignCharts campaigns={campaigns} />
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <BarChart3 className="h-16 w-16 text-muted-foreground/30 mb-4" />
+              <p className="text-xl text-muted-foreground">Nenhuma campanha para apresentar.</p>
+            </div>
+          )}
+        </div>
+
+        <Button
+          onClick={() => setPresentationMode(false)}
+          size="icon"
+          variant="secondary"
+          className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full shadow-lg"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,10 +87,21 @@ export default function Index() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
             {campaigns.length > 0 && (
-              <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive" onClick={clearAll}>
-                <Trash2 className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Limpar histórico</span>
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                  onClick={() => setPresentationMode(true)}
+                >
+                  <Presentation className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Apresentação</span>
+                </Button>
+                <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive" onClick={clearAll}>
+                  <Trash2 className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Limpar histórico</span>
+                </Button>
+              </>
             )}
             <PDFExport campaigns={campaigns} />
             <Link
