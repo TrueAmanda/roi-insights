@@ -41,11 +41,11 @@ export default function Index() {
             <BarChart3 className="h-6 w-6 text-primary" />
             <span className="text-lg font-bold text-foreground">AdMetrics</span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {campaigns.length > 0 && (
               <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:text-destructive" onClick={clearAll}>
                 <Trash2 className="h-3.5 w-3.5" />
-                Limpar histórico
+                <span className="hidden sm:inline">Limpar histórico</span>
               </Button>
             )}
             <PDFExport campaigns={campaigns} />
