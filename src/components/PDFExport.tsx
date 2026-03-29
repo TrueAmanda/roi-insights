@@ -236,9 +236,9 @@ export function PDFExport({ campaigns }: PDFExportProps) {
   if (campaigns.length === 0) return null;
 
   return (
-    <Button onClick={exportPDF} variant="outline" className="gap-2">
+    <Button onClick={exportPDF} variant="outline" size="sm" className="gap-1.5">
       <FileDown className="h-4 w-4" />
-      Exportar PDF
+      <span className="hidden sm:inline">Exportar PDF</span>
     </Button>
   );
 }
