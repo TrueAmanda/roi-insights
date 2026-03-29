@@ -94,7 +94,29 @@ export default function Readme() {
         </div>
       </section>
 
-      {/* Who uses it */}
+      {/* Features */}
+      <section className="container mx-auto max-w-3xl px-4 py-16">
+        <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-6">Funcionalidades</motion.h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[
+            { icon: BarChart3, title: "Gráficos comparativos", desc: "Visualize ROI e ROAS de todas as campanhas lado a lado em gráficos de barras." },
+            { icon: CheckCircle2, title: "Meta de ROI", desc: "Defina uma meta por campanha e veja um indicador verde ou vermelho de atingimento." },
+            { icon: Brain, title: "Score com IA", desc: "Receba uma nota de 0 a 10 e um insight analítico gerado por inteligência artificial." },
+            { icon: Presentation, title: "Modo apresentação", desc: "Layout fullscreen limpo para usar em reuniões com clientes." },
+            { icon: Save, title: "Histórico automático", desc: "Campanhas salvas automaticamente via localStorage, sem necessidade de cadastro." },
+          ].map((item, i) => (
+            <motion.div key={i} {...fade(i * 0.1)} className="flex items-start gap-3 rounded-xl border bg-card p-4">
+              <item.icon className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+
       <section className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Users className="h-6 w-6 text-primary" /> Para quem é
