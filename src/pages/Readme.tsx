@@ -80,9 +80,9 @@ export default function Readme() {
           <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-8">Como funciona</motion.h2>
           <div className="grid gap-6 sm:grid-cols-3">
             {[
-              { icon: Target, title: "Insira os dados", desc: "Preencha nome, canal, investimento, cliques, leads, vendas e receita." },
+              { icon: Target, title: "Insira os dados", desc: "Preencha nome, canal, investimento, cliques, leads, vendas, receita e meta de ROI." },
               { icon: Zap, title: "Veja as métricas", desc: "ROI, ROAS, CPL, CPA e taxa de conversão são calculados automaticamente." },
-              { icon: BarChart3, title: "Compare e exporte", desc: "Compare campanhas lado a lado e exporte um relatório em PDF." },
+              { icon: BarChart3, title: "Compare e exporte", desc: "Gráficos comparativos de ROI e ROAS entre campanhas, com exportação em PDF." },
             ].map((item, i) => (
               <motion.div key={i} {...fade(i * 0.15)} className="rounded-xl border bg-background p-5">
                 <item.icon className="h-8 w-8 text-primary mb-3" />
