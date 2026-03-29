@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BarChart3, Target, Zap, Users, Clock, ArrowRight } from "lucide-react";
+import { BarChart3, Target, Zap, Users, Clock, ArrowRight, CheckCircle2, Brain, Presentation, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -80,9 +80,9 @@ export default function Readme() {
           <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-8">Como funciona</motion.h2>
           <div className="grid gap-6 sm:grid-cols-3">
             {[
-              { icon: Target, title: "Insira os dados", desc: "Preencha nome, canal, investimento, cliques, leads, vendas e receita." },
+              { icon: Target, title: "Insira os dados", desc: "Preencha nome, canal, investimento, cliques, leads, vendas, receita e meta de ROI." },
               { icon: Zap, title: "Veja as métricas", desc: "ROI, ROAS, CPL, CPA e taxa de conversão são calculados automaticamente." },
-              { icon: BarChart3, title: "Compare e exporte", desc: "Compare campanhas lado a lado e exporte um relatório em PDF." },
+              { icon: BarChart3, title: "Compare e exporte", desc: "Gráficos comparativos de ROI e ROAS entre campanhas, com exportação em PDF." },
             ].map((item, i) => (
               <motion.div key={i} {...fade(i * 0.15)} className="rounded-xl border bg-background p-5">
                 <item.icon className="h-8 w-8 text-primary mb-3" />
@@ -94,7 +94,29 @@ export default function Readme() {
         </div>
       </section>
 
-      {/* Who uses it */}
+      {/* Features */}
+      <section className="container mx-auto max-w-3xl px-4 py-16">
+        <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-6">Funcionalidades</motion.h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[
+            { icon: BarChart3, title: "Gráficos comparativos", desc: "Visualize ROI e ROAS de todas as campanhas lado a lado em gráficos de barras." },
+            { icon: CheckCircle2, title: "Meta de ROI", desc: "Defina uma meta por campanha e veja um indicador verde ou vermelho de atingimento." },
+            { icon: Brain, title: "Score com IA", desc: "Receba uma nota de 0 a 10 e um insight analítico gerado por inteligência artificial." },
+            { icon: Presentation, title: "Modo apresentação", desc: "Layout fullscreen limpo para usar em reuniões com clientes." },
+            { icon: Save, title: "Histórico automático", desc: "Campanhas salvas automaticamente via localStorage, sem necessidade de cadastro." },
+          ].map((item, i) => (
+            <motion.div key={i} {...fade(i * 0.1)} className="flex items-start gap-3 rounded-xl border bg-card p-4">
+              <item.icon className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+
       <section className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Users className="h-6 w-6 text-primary" /> Para quem é
