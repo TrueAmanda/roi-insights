@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BarChart3, Target, Zap, Users, Clock, ArrowRight } from "lucide-react";
+import { BarChart3, Target, Zap, Users, Clock, ArrowRight, CheckCircle2, Brain, Presentation, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
