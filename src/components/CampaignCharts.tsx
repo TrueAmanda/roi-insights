@@ -6,7 +6,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { BarChart3, TrendingUp } from "lucide-react";
 
 interface CampaignChartsProps {
@@ -35,13 +35,13 @@ export function CampaignCharts({ campaigns }: CampaignChartsProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center gap-2 pb-2">
           <BarChart3 className="h-4 w-4 text-primary" />
           <CardTitle className="text-sm font-semibold">ROI por Campanha</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={roiConfig} className="h-[250px] w-full">
+        <CardContent className="w-full overflow-hidden">
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
@@ -49,19 +49,19 @@ export function CampaignCharts({ campaigns }: CampaignChartsProps) {
               <ChartTooltip
                 content={<ChartTooltipContent formatter={(value) => `${value}%`} />}
               />
-              <Bar dataKey="roi" fill="var(--color-roi)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="roi" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
             </BarChart>
-          </ChartContainer>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center gap-2 pb-2">
           <TrendingUp className="h-4 w-4 text-success" />
           <CardTitle className="text-sm font-semibold">ROAS por Campanha</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={roasConfig} className="h-[250px] w-full">
+        <CardContent className="w-full overflow-hidden">
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
@@ -69,9 +69,9 @@ export function CampaignCharts({ campaigns }: CampaignChartsProps) {
               <ChartTooltip
                 content={<ChartTooltipContent formatter={(value) => `${value}x`} />}
               />
-              <Bar dataKey="roas" fill="var(--color-roas)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="roas" fill="hsl(var(--success, 142 71% 45%))" radius={[4, 4, 0, 0]} />
             </BarChart>
-          </ChartContainer>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>
