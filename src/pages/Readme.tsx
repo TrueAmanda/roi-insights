@@ -105,7 +105,7 @@ export default function Readme() {
             { icon: Presentation, title: "Modo apresentação", desc: "Layout fullscreen limpo para usar em reuniões com clientes." },
             { icon: Save, title: "Histórico automático", desc: "Campanhas salvas automaticamente via localStorage, sem necessidade de cadastro." },
           ].map((item, i) => (
-            <motion.div key={i} {...fade(i * 0.1)} className="flex items-start gap-3 rounded-xl border bg-card p-4">
+            <motion.div key={i} {...fade(i * 0.1)} className="flex items-start gap-3 rounded-xl border bg-background p-4">
               <item.icon className="h-5 w-5 text-primary mt-0.5 shrink-0" />
               <div>
                 <h3 className="font-semibold text-foreground text-sm">{item.title}</h3>
