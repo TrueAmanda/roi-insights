@@ -95,7 +95,8 @@ export default function Readme() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto max-w-3xl px-4 py-16">
+      <section className="bg-card border-y">
+        <div className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-6">Funcionalidades</motion.h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {[
