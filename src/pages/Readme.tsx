@@ -137,6 +137,7 @@ export default function Readme() {
             </li>
           ))}
         </motion.ul>
+        </div>
       </section>
 
       {/* When to use */}
