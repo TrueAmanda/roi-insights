@@ -115,6 +115,7 @@ export default function Readme() {
             </motion.div>
           ))}
         </div>
+        </div>
       </section>
 
 
