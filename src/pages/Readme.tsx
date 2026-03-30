@@ -75,7 +75,7 @@ export default function Readme() {
       </section>
 
       {/* How it works */}
-      <section className="bg-card border-y">
+      <section className="border-y">
         <div className="container mx-auto max-w-3xl px-4 py-16">
           <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-8">Como funciona</motion.h2>
           <div className="grid gap-6 sm:grid-cols-3">
@@ -95,7 +95,8 @@ export default function Readme() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto max-w-3xl px-4 py-16">
+      <section className="bg-card border-y">
+        <div className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-6">Funcionalidades</motion.h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {[
@@ -114,10 +115,12 @@ export default function Readme() {
             </motion.div>
           ))}
         </div>
+        </div>
       </section>
 
 
-      <section className="container mx-auto max-w-3xl px-4 py-16">
+      <section className="bg-card">
+        <div className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Users className="h-6 w-6 text-primary" /> Para quem é
         </motion.h2>
@@ -134,10 +137,11 @@ export default function Readme() {
             </li>
           ))}
         </motion.ul>
+        </div>
       </section>
 
       {/* When to use */}
-      <section className="bg-card border-y">
+      <section className="border-y">
         <div className="container mx-auto max-w-3xl px-4 py-16">
           <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
             <Clock className="h-6 w-6 text-primary" /> Quando usar
