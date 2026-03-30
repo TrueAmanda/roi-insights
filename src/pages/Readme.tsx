@@ -75,7 +75,7 @@ export default function Readme() {
       </section>
 
       {/* How it works */}
-      <section className="bg-card border-y">
+      <section className="border-y">
         <div className="container mx-auto max-w-3xl px-4 py-16">
           <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-8">Como funciona</motion.h2>
           <div className="grid gap-6 sm:grid-cols-3">
