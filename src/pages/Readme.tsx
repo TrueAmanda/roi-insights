@@ -119,7 +119,8 @@ export default function Readme() {
       </section>
 
 
-      <section className="container mx-auto max-w-3xl px-4 py-16">
+      <section className="bg-card">
+        <div className="container mx-auto max-w-3xl px-4 py-16">
         <motion.h2 {...fade(0)} className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Users className="h-6 w-6 text-primary" /> Para quem é
         </motion.h2>
